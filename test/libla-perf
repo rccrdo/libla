@@ -1,0 +1,66 @@
+#!/usr/bin/python
+
+ # Copyright (c) 2008 Riccardo Lucchese, riccardo.lucchese at gmail.com
+ # 
+ # This software is provided 'as-is', without any express or implied
+ # warranty. In no event will the authors be held liable for any damages
+ # arising from the use of this software.
+ # 
+ # Permission is granted to anyone to use this software for any purpose,
+ # including commercial applications, and to alter it and redistribute it
+ # freely, subject to the following restrictions:
+ # 
+ #    1. The origin of this software must not be misrepresented; you must not
+ #    claim that you wrote the original software. If you use this software
+ #    in a product, an acknowledgment in the product documentation would be
+ #    appreciated but is not required.
+ # 
+ #    2. Altered source versions must be plainly marked as such, and must not be
+ #    misrepresented as being the original software.
+ # 
+ #    3. This notice may not be removed or altered from any source
+ #    distribution.
+
+
+import os
+from time import strftime
+
+_gcc_base_cmdline = 'gcc -O2 -I../src -lm'
+
+_libla_cfg_las = ('LA_SCALAR_FLOAT', 'LA_SCALAR_DOUBLE', 'LA_SCALAR_LONGDOUBLE')
+
+_test_src = ('lav3.c',)
+
+def main():
+    # write me !
+    # call convention: liblatest [debug] [float|double|longdouble] [custom_flags=""] test {all|obj_name} {all|test_name}
+
+    test_results_file = strftime("perf-stats-%Y-%m-%d-%H.%M.%S")
+    os.system(' '.join(['touch', test_results_file]))
+    for src in _test_src:
+        src_cflags = ''
+        if src == 'lav3.c':
+            src_cflags = ' '.join(['-DTEST_LAV3_DOT=100000000',
+                                   '-DTEST_LAV3_IPSMUL=100000000',
+                                   '-DTEST_LAV3_NORMALIZE=10000000'])
+
+        for cfg_las in _libla_cfg_las:
+            exec_file = src.rstrip('.c')
+            build_cmdline = ' '.join([_gcc_base_cmdline,
+                                      src_cflags,
+                                      '-D', cfg_las,
+                                      src, '-o', exec_file ]) 
+            print ' '.join(['CC', src])
+            os.system(build_cmdline)
+            print ' '.join(['TEST', exec_file, '...'])            
+            os.system(''.join(['./',exec_file, ' >> ', test_results_file ]))
+            
+
+if __name__ == "__main__":
+    main()
+
+      
+  
+
+ 
+

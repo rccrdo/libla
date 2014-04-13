@@ -1,0 +1,23 @@
+#define LA_DEBUG
+
+/* define to enable a faster sqrt implementation
+ * ! uses sqrtf for all floating point types with
+ *   some precision loss */
+#define LA_FAST_SQRT
+
+/* define to enable padding for struct lav3
+ * ! should help memory alignement
+ * TODO: test this */
+#define LAV3_PADDING
+
+/* define to enable faster batch-divisions for lav3
+ * ! loss of precision */
+#define LAV3_FAST_DIV
+
+/* define to enable faster batch-divisions for lam3
+ * ! loss of precision */
+#define LAM3_FAST_DIV
+
+/* define to enable faster batch-divisions for lam4
+ * ! loss of precision */
+#define LAM4_FAST_DIV
